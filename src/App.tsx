@@ -25,8 +25,7 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { isLoading } = useSWR('all-countries', () =>
     fetcherCountry(URL_ALL_COUNTRIES, {
-      fields:
-        'name,population,region,capital,flags,subregion,tld,currencies,languages,borders,ccn3',
+      fields: 'flags,population,region,capital,name,ccn3',
     })
   );
 
