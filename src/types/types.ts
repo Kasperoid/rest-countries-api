@@ -25,3 +25,8 @@ export type countryType = {
 export type themeModeType = {
     mode: 'light' | 'dark';
 }
+
+export type optionSelect = {
+    value: string;
+    label: string;
+};
