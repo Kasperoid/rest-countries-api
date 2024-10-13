@@ -13,16 +13,16 @@ export const CardsContainer = () => {
   const { isDarkMode } = useContext(Context);
   const { data } = useSWR<countryType[]>('all-countries', () =>
     fetcherCountry(URL_ALL_COUNTRIES, {
-      fields:
-        'name,population,region,capital,flags,subregion,tld,currencies,languages,borders,ccn3',
+      fields: 'flags,population,region,capital,name,ccn3',
     })
   );
+
   return (
     <Flex wrap gap={50}>
-      {data?.map(item => (
+      {data?.map((item, index) => (
         <CardCountryStyled
           mode={isDarkMode ? 'dark' : 'light'}
-          key={item.ccn3}
+          key={index}
           hoverable
           cover={<img alt={item.name.common} src={item.flags.svg} />}
         >
