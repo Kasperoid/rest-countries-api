@@ -14,9 +14,9 @@ export const CardsContainer = () => {
   };
 
   const navigate = useNavigate();
-  const data = useAppSelector(state => state.countries.countries);
-  const isLoading = useAppSelector(state => state.countries.isLoading);
-  const isDarkMode = useAppSelector(store => store.mode.isDarkMode);
+  const data = useAppSelector((state) => state.countries.countries);
+  const isLoading = useAppSelector((state) => state.countries.isLoading);
+  const isDarkMode = useAppSelector((store) => store.mode.isDarkMode);
 
   return (
     <>
