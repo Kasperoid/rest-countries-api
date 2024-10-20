@@ -1,23 +1,26 @@
-import { Button, Col, Flex, Image, Row, Space } from 'antd';
+import { Col, Flex, Image, Row, Space } from 'antd';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { SpinStyled } from '../../../styles/loader/SpinStyled';
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { fetchCountry } from '../../../redux/slices/countrySlice';
 import { TitleStyled } from '../../../styles/TitleStyled';
 import { TextStyled } from '../../../styles/TextStyled';
+import { CountryPageContainerStyled } from '../../../styles/content/country-page/CountryPageContainerStyled';
+import { ButtonsBorderedStyled } from '../../../styles/content/country-page/ButtonsBorderedStyled';
 
 export const CountryPageContainer = () => {
   const params = useParams();
-  const { isLoading, country } = useAppSelector(store => store.country);
+  const { isLoading, country } = useAppSelector((store) => store.country);
   const dispatch = useAppDispatch();
-  const isDarkMode = useAppSelector(store => store.mode.isDarkMode);
+  const isDarkMode = useAppSelector((store) => store.mode.isDarkMode);
+  const navigate = useNavigate();
 
   const optionsDescFirstCol = [
     {
       title: 'Native Name',
-      value: country?.name.nativeName,
+      value: country?.name.nativeName.common,
     },
     {
       title: 'Population',
@@ -40,15 +43,15 @@ export const CountryPageContainer = () => {
   const optionsDescSecondCol = [
     {
       title: 'Top Level Domain',
-      value: country?.tld?.join(' '),
+      value: country?.tld,
     },
     {
       title: 'Currencies',
-      value: country?.currencies, //?????
+      value: country?.currencies,
     },
     {
-      title: 'Native Name',
-      value: country?.languages, //????
+      title: 'Languages',
+      value: country?.languages,
     },
   ];
 
@@ -61,6 +64,7 @@ export const CountryPageContainer = () => {
       })
     );
   }, [dispatch, params.countryId]);
+
   return (
     <>
       {isLoading ? (
@@ -69,28 +73,71 @@ export const CountryPageContainer = () => {
           indicator={<LoadingOutlined spin />}
         />
       ) : (
-        <Flex vertical>
+        <CountryPageContainerStyled
+          mode={isDarkMode ? 'dark' : 'light'}
+          vertical
+          gap={50}
+        >
           <div>
-            <Button>Back</Button>
+            <ButtonsBorderedStyled
+              mode={isDarkMode ? 'dark' : 'light'}
+              onClick={() => navigate(-1)}
+              icon={<ArrowLeftOutlined />}
+            >
+              Back
+            </ButtonsBorderedStyled>
           </div>
-          <Row>
-            <Col xl={12}>
+          <Row
+            gutter={[0, 50]}
+            align={'middle'}
+            justify={{ md: 'space-between', sm: 'center' }}
+          >
+            <Col xl={8} lg={9} md={9} sm={12} xs={24}>
               <Image src={country?.flags.svg} />
             </Col>
-            <Col xl={12}>
+            <Col xl={14} lg={12} md={12}>
               <TitleStyled level={2}>{country?.name.common}</TitleStyled>
-              <Row>
-                <Col xl={12}>
-                  <Space>
-                    <TitleStyled level={3}>Native Name: </TitleStyled>
-                    <TextStyled>{country?.population}</TextStyled>
-                  </Space>
+              <Row style={{ margin: '15px 0 30px' }} gutter={[0, { xs: 30 }]}>
+                <Col xl={10} lg={12} xs={24}>
+                  <Flex vertical>
+                    {optionsDescFirstCol.map((item, index) => (
+                      <Space key={index}>
+                        <TitleStyled level={3}>{item.title}: </TitleStyled>
+                        <TextStyled>{item.value}</TextStyled>
+                      </Space>
+                    ))}
+                  </Flex>
                 </Col>
-                <Col xl={12}></Col>
+                <Col xl={12} lg={12} xs={24}>
+                  <Flex vertical>
+                    {optionsDescSecondCol.map((item, index) => (
+                      <Space key={index}>
+                        <TitleStyled level={3}>{item.title}: </TitleStyled>
+                        <TextStyled>{item.value}</TextStyled>
+                      </Space>
+                    ))}
+                  </Flex>
+                </Col>
               </Row>
+              {country?.borders?.length !== 0 && (
+                <Flex wrap gap={10} align="center">
+                  <TitleStyled level={3}>Border Countries: </TitleStyled>
+                  <Flex gap={15} wrap>
+                    {country?.borders?.map((item, index) => (
+                      <ButtonsBorderedStyled
+                        key={index}
+                        mode={isDarkMode ? 'dark' : 'light'}
+                        onClick={() => navigate(-1)}
+                      >
+                        {item}
+                      </ButtonsBorderedStyled>
+                    ))}
+                  </Flex>
+                </Flex>
+              )}
             </Col>
           </Row>
-        </Flex>
+        </CountryPageContainerStyled>
       )}
     </>
   );
