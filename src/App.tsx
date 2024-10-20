@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GlobalStyle from './styles/global';
 import { HeaderContainer } from './components/header/HeaderContainer';
 import { ContentContainer } from './components/content/ContentContainer';
-import useSWR from 'swr';
-import { LoadingOutlined } from '@ant-design/icons';
-import { fetcherCountry } from './helpers/fetcher';
-import { URL_ALL_COUNTRIES } from './constants/constants';
-import { SpinStyled } from './styles/loader/SpinStyled';
 import { LayoutStyled } from './styles/layout/LayoutStyled';
+import { useAppDispatch } from './redux/hooks';
+import { fetchCountries } from './redux/slices/countriesSlice';
+import { URL_ALL_COUNTRIES } from './constants/constants';
 
 // Вынести контекст в отдельную функцию
 
@@ -23,25 +21,23 @@ export const Context = React.createContext<contextType>({
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const { isLoading } = useSWR('all-countries', () =>
-    fetcherCountry(URL_ALL_COUNTRIES, {
-      fields: 'flags,population,region,capital,name,ccn3',
-    })
-  );
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(
+      fetchCountries({
+        url: URL_ALL_COUNTRIES,
+        fields: 'flags,population,region,capital,name,ccn3',
+      })
+    );
+  }, [dispatch]);
 
   return (
     <Context.Provider value={{ isDarkMode, setIsDarkMode }}>
       <GlobalStyle mode={isDarkMode ? 'dark' : 'light'} />
       <LayoutStyled mode={isDarkMode ? 'dark' : 'light'}>
         <HeaderContainer />
-        {isLoading ? (
-          <SpinStyled
-            mode={isDarkMode ? 'dark' : 'light'}
-            indicator={<LoadingOutlined spin />}
-          />
-        ) : (
-          <ContentContainer />
-        )}
+        <ContentContainer />
       </LayoutStyled>
     </Context.Provider>
   );
