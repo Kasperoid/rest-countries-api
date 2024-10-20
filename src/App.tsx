@@ -1,27 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import GlobalStyle from './styles/global';
 import { HeaderContainer } from './components/header/HeaderContainer';
 import { ContentContainer } from './components/content/ContentContainer';
 import { LayoutStyled } from './styles/layout/LayoutStyled';
-import { useAppDispatch } from './redux/hooks';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { fetchCountries } from './redux/slices/countriesSlice';
 import { URL_ALL_COUNTRIES } from './constants/constants';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { CountryPageContainer } from './components/content/country-page/CountryPageContainer';
+import { ContentContainerStyled } from './styles/content/ContentContainerStyled';
 
-// Вынести контекст в отдельную функцию
-
-type contextType = {
-  isDarkMode: boolean;
-  setIsDarkMode: (c: boolean) => void;
-};
-
-export const Context = React.createContext<contextType>({
-  isDarkMode: false,
-  setIsDarkMode: () => {},
-});
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <ContentContainer />,
+  },
+  {
+    path: '/country/:countryId',
+    element: <CountryPageContainer />,
+  },
+]);
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const dispatch = useAppDispatch();
+  const isDarkMode = useAppSelector(store => store.mode.isDarkMode);
 
   useEffect(() => {
     dispatch(
@@ -33,13 +35,15 @@ function App() {
   }, [dispatch]);
 
   return (
-    <Context.Provider value={{ isDarkMode, setIsDarkMode }}>
+    <>
       <GlobalStyle mode={isDarkMode ? 'dark' : 'light'} />
       <LayoutStyled mode={isDarkMode ? 'dark' : 'light'}>
         <HeaderContainer />
-        <ContentContainer />
+        <ContentContainerStyled>
+          <RouterProvider router={router} />
+        </ContentContainerStyled>
       </LayoutStyled>
-    </Context.Provider>
+    </>
   );
 }
 
