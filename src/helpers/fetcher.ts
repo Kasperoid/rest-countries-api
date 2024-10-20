@@ -1,9 +1,9 @@
 import axios from "axios";
-import { countryType, optionSelect } from "../types/types";
+import { CountryType, OptionSelect } from "../types/types";
 import { uniqRegion } from "./uniqRegion";
 import { createSelectOptions } from "./createSelectOptions";
 
-export async function fetcherCountry(url: string, { ...args }: any): Promise<countryType[]> {
+export async function fetcherCountry(url: string, { ...args }: any): Promise<CountryType[]> {
     const resp = await axios(url, {
         params: args
     });
@@ -11,10 +11,10 @@ export async function fetcherCountry(url: string, { ...args }: any): Promise<cou
     return data;
 }
 
-export async function fetcherCategory(url: string, { ...arg }: any): Promise<optionSelect[]> {
+export async function fetcherCategory(url: string, { ...arg }: any): Promise<OptionSelect[]> {
     const resp = await axios(url, { params: arg })
-    const data: countryType[] = resp.data
+    const data: CountryType[] = resp.data
     const uniqReg: string[] = uniqRegion(data)
-    const resultOptions: optionSelect[] = createSelectOptions(uniqReg)
+    const resultOptions: OptionSelect[] = createSelectOptions(uniqReg)
     return resultOptions
 }

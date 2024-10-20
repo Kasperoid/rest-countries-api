@@ -1,9 +1,9 @@
 import { Spin, SpinProps } from 'antd';
 import styled from 'styled-components';
-import { themeModeType } from '../../types/types';
+import { ThemeModeType } from '../../types/types';
 import { baseTheme } from '../baseTheme';
 
-export const SpinStyled = styled(Spin)<SpinProps & themeModeType>`
+export const SpinStyled = styled(Spin)<SpinProps & ThemeModeType>`
   & {
     height: 100vh;
     position: fixed;

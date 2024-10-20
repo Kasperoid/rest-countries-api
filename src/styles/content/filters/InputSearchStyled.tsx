@@ -1,12 +1,12 @@
 import { Input } from 'antd';
 import styled from 'styled-components';
-import { themeModeType } from '../../../types/types';
+import { ThemeModeType } from '../../../types/types';
 import { baseTheme } from '../../baseTheme';
 import { SearchProps } from 'antd/es/input';
 
 const { Search } = Input;
 
-export const InputSearchStyled = styled(Search)<SearchProps & themeModeType>`
+export const InputSearchStyled = styled(Search)<SearchProps & ThemeModeType>`
   && {
     box-shadow: 0px 0px 25px -3px rgba(34, 60, 80, 0.15);
     width: 30vw;

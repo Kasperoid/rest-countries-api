@@ -1,9 +1,9 @@
 import { Card, CardProps } from 'antd';
 import styled from 'styled-components';
-import { themeModeType } from '../../../types/types';
+import { ThemeModeType } from '../../../types/types';
 import { baseTheme } from '../../baseTheme';
 
-export const CardCountryStyled = styled(Card)<CardProps & themeModeType>`
+export const CardCountryStyled = styled(Card)<CardProps & ThemeModeType>`
   && {
     &.ant-card {
       max-width: 400px;

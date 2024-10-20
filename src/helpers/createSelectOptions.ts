@@ -1,6 +1,6 @@
-import { optionSelect } from "../types/types";
+import { OptionSelect } from "../types/types";
 
-export const createSelectOptions = (options: string[]): optionSelect[] => {
+export const createSelectOptions = (options: string[]): OptionSelect[] => {
     const result = options.map(item => {
         return {
             value: item,

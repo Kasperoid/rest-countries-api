@@ -1,11 +1,11 @@
 import { Layout } from 'antd';
 import styled from 'styled-components';
-import { themeModeType } from '../../types/types';
+import { ThemeModeType } from '../../types/types';
 import { baseTheme } from '../baseTheme';
 
 const { Header } = Layout;
 
-export const HeaderContainerStyled = styled(Header)<themeModeType>`
+export const HeaderContainerStyled = styled(Header)<ThemeModeType>`
   && {
     &.ant-layout-header {
       padding: 0;

@@ -1,8 +1,8 @@
 import { createGlobalStyle } from 'styled-components'
 import { baseTheme } from './baseTheme';
-import { themeModeType } from '../types/types';
+import { ThemeModeType } from '../types/types';
 
-export default createGlobalStyle<themeModeType>`
+export default createGlobalStyle<ThemeModeType>`
 * {
     font-family: "Nunito Sans", sans-serif !important;
 

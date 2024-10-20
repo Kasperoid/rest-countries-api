@@ -1,9 +1,9 @@
 import { Select, SelectProps } from 'antd';
 import styled from 'styled-components';
-import { themeModeType } from '../../../types/types';
+import { ThemeModeType } from '../../../types/types';
 import { baseTheme } from '../../baseTheme';
 
-interface SelectCountryProps extends Omit<SelectProps, 'mode'>, themeModeType {}
+interface SelectCountryProps extends Omit<SelectProps, 'mode'>, ThemeModeType {}
 
 export const SelectCountryStyled = styled(Select)<SelectCountryProps>`
   && {
