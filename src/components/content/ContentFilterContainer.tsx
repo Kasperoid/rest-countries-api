@@ -1,6 +1,5 @@
 import { Flex } from 'antd';
-import { Context } from '../../App';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { InputSearchStyled } from '../../styles/content/filters/InputSearchStyled';
 import { SelectCountryStyled } from '../../styles/content/filters/SelectCountryStyled';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -40,9 +39,11 @@ export const ContentFilterContainer = () => {
   const { isLoading: isLoadingFilters, options: data } = useAppSelector(
     store => store.categories
   );
-  const { isLoading: isLoadingCards } = useAppSelector(store => store.contries);
+  const { isLoading: isLoadingCards } = useAppSelector(
+    store => store.countries
+  );
   const dispatch = useAppDispatch();
-  const { isDarkMode } = useContext(Context);
+  const isDarkMode = useAppSelector(store => store.mode.isDarkMode);
 
   useEffect(() => {
     dispatch(

@@ -3,11 +3,13 @@ import { HeaderContainerInnerStyled } from '../../styles/header/HeaderContainerI
 import { HeaderContainerStyled } from '../../styles/header/HeaderContainerStyled';
 import { TitleStyled } from '../../styles/TitleStyled';
 import { MoonOutlined } from '@ant-design/icons';
-import { Context } from '../../App';
-import { useContext } from 'react';
+import { useAppSelector } from '../../redux/hooks';
+import { useDispatch } from 'react-redux';
+import { setIsDarkMode } from '../../redux/slices/darkModeSlice';
 
 export const HeaderContainer = () => {
-  const { isDarkMode, setIsDarkMode } = useContext(Context);
+  const isDarkMode = useAppSelector(store => store.mode.isDarkMode);
+  const dispatcher = useDispatch();
   return (
     <HeaderContainerStyled mode={isDarkMode ? 'dark' : 'light'}>
       <HeaderContainerInnerStyled align="center" justify="space-between">
@@ -16,7 +18,7 @@ export const HeaderContainer = () => {
           type="text"
           icon={<MoonOutlined />}
           style={{ fontWeight: 600 }}
-          onClick={() => setIsDarkMode(!isDarkMode)}
+          onClick={() => dispatcher(setIsDarkMode())}
         >
           Dark Mode
         </Button>
