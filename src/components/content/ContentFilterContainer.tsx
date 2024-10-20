@@ -1,11 +1,12 @@
 import { Flex } from 'antd';
-import useSWR from 'swr';
-import { fetcherCategory, fetcherCountry } from '../../helpers/fetcher';
-import { URL_ALL_COUNTRIES } from '../../constants/constants';
 import { Context } from '../../App';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { InputSearchStyled } from '../../styles/content/filters/InputSearchStyled';
 import { SelectCountryStyled } from '../../styles/content/filters/SelectCountryStyled';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { fetchCategory } from '../../redux/slices/categoryContriesSlice';
+import { URL_ALL_COUNTRIES } from '../../constants/constants';
+import { fetchCountries } from '../../redux/slices/countriesSlice';
 
 export const ContentFilterContainer = () => {
   const onSelectCountryHandler = (selectText: string): void => {
@@ -14,7 +15,12 @@ export const ContentFilterContainer = () => {
         ? URL_ALL_COUNTRIES
         : `https://restcountries.com/v3.1/region/${selectText}`;
 
-    mutate(() => fetcherCountry(searchUrl, {}), { revalidate: false });
+    dispatch(
+      fetchCountries({
+        url: searchUrl,
+        fields: 'flags,population,region,capital,name,ccn3',
+      })
+    );
   };
 
   const onSearchInputHandler = (searchTextCountry: string) => {
@@ -23,21 +29,34 @@ export const ContentFilterContainer = () => {
         ? URL_ALL_COUNTRIES
         : `https://restcountries.com/v3.1/name/${searchTextCountry}`;
 
-    mutate(() => fetcherCountry(searchUrl, {}), { revalidate: false });
+    dispatch(
+      fetchCountries({
+        url: searchUrl,
+        fields: 'flags,population,region,capital,name,ccn3',
+      })
+    );
   };
 
-  const { data, isLoading } = useSWR('countries-category', () =>
-    fetcherCategory(URL_ALL_COUNTRIES, {
-      fields: 'region',
-    })
+  const { isLoading: isLoadingFilters, options: data } = useAppSelector(
+    store => store.categories
   );
-
-  const { mutate } = useSWR('all-countries');
+  const { isLoading: isLoadingCards } = useAppSelector(store => store.contries);
+  const dispatch = useAppDispatch();
   const { isDarkMode } = useContext(Context);
+
+  useEffect(() => {
+    dispatch(
+      fetchCategory({
+        url: URL_ALL_COUNTRIES,
+        fields: 'region',
+      })
+    );
+  }, [dispatch]);
 
   return (
     <Flex justify="space-between">
       <InputSearchStyled
+        loading={isLoadingCards}
         mode={isDarkMode ? 'dark' : 'light'}
         placeholder="Search for a country..."
         variant="borderless"
@@ -46,7 +65,7 @@ export const ContentFilterContainer = () => {
       />
       <div>
         <SelectCountryStyled
-          loading={isLoading}
+          loading={isLoadingFilters || isLoadingCards}
           placeholder="Filter by Region"
           optionFilterProp="label"
           options={data}
