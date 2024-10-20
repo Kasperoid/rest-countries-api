@@ -1,4 +1,4 @@
-export type countryType = {
+export type CountryType = {
     name: {
         common: string,
         nativeName: {
@@ -22,11 +22,16 @@ export type countryType = {
     ccn3: number;
 }
 
-export type themeModeType = {
+export type ThemeModeType = {
     mode: 'light' | 'dark';
 }
 
-export type optionSelect = {
+export type OptionSelect = {
     value: string;
     label: string;
 };
+
+export type ArgsFetcherType = {
+    url: string;
+    fields?: string;
+}
