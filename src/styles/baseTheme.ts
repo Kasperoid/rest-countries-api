@@ -66,7 +66,7 @@ export const baseTheme: baseThemeType = {
             h3: {
                 min: 12,
                 max: 14,
-                weight: 600
+                weight: 700
             }
         },
         main: {
