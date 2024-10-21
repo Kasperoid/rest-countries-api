@@ -63,3 +63,8 @@ export type ArgsFetcherType = {
   url: string;
   fields?: string;
 };
+
+export type ErrorType = {
+  code: string;
+  message: string;
+};
