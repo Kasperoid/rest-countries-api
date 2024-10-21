@@ -1,4 +1,4 @@
-import { Flex, Space } from 'antd';
+import { Flex, message, Space } from 'antd';
 import { CardCountryStyled } from '../../../styles/content/cards/CardCountryStyled';
 import { TitleStyled } from '../../../styles/TitleStyled';
 import { TextStyled } from '../../../styles/TextStyled';
@@ -7,26 +7,40 @@ import { SpinStyled } from '../../../styles/loader/SpinStyled';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Wrapper } from '../../../styles/Wrapper';
 import { useNavigate } from 'react-router-dom';
+import { ErrorType } from '../../../types/types';
 
 export const CardsContainer = () => {
   const onClickCardHandler = (event: any) => {
     navigate(`/country/${event.target.id}`);
   };
 
+  const errorMessage = (error: ErrorType) => {
+    messageApi.open({
+      type: 'error',
+      content: `${error.code}: ${error.message}`,
+    });
+  };
+
+  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
-  const data = useAppSelector((state) => state.countries.countries);
-  const isLoading = useAppSelector((state) => state.countries.isLoading);
+  const {
+    countries: data,
+    isLoading,
+    error,
+  } = useAppSelector((state) => state.countries);
   const isDarkMode = useAppSelector((store) => store.mode.isDarkMode);
 
   return (
     <>
+      {contextHolder}
+      {error && errorMessage(error)}
       {isLoading ? (
         <SpinStyled
           mode={isDarkMode ? 'dark' : 'light'}
           indicator={<LoadingOutlined spin />}
         />
       ) : (
-        <Flex wrap gap={50}>
+        <Flex wrap gap={50} justify="center">
           {data?.map((item, index) => (
             <CardCountryStyled
               mode={isDarkMode ? 'dark' : 'light'}
