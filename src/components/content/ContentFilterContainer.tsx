@@ -1,4 +1,3 @@
-import { Flex } from 'antd';
 import { useEffect } from 'react';
 import { InputSearchStyled } from '../../styles/content/filters/InputSearchStyled';
 import { SelectCountryStyled } from '../../styles/content/filters/SelectCountryStyled';
@@ -6,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchCategory } from '../../redux/slices/categoryContriesSlice';
 import { URL_ALL_COUNTRIES } from '../../constants/constants';
 import { fetchCountries } from '../../redux/slices/countriesSlice';
+import { FiltersContainerStyled } from '../../styles/content/filters/FiltersContainerStyled';
 
 export const ContentFilterContainer = () => {
   const onSelectCountryHandler = (selectText: string): void => {
@@ -37,13 +37,13 @@ export const ContentFilterContainer = () => {
   };
 
   const { isLoading: isLoadingFilters, options: data } = useAppSelector(
-    store => store.categories
+    (store) => store.categories
   );
   const { isLoading: isLoadingCards } = useAppSelector(
-    store => store.countries
+    (store) => store.countries
   );
   const dispatch = useAppDispatch();
-  const isDarkMode = useAppSelector(store => store.mode.isDarkMode);
+  const isDarkMode = useAppSelector((store) => store.mode.isDarkMode);
 
   useEffect(() => {
     dispatch(
@@ -55,14 +55,16 @@ export const ContentFilterContainer = () => {
   }, [dispatch]);
 
   return (
-    <Flex justify="space-between">
+    <FiltersContainerStyled justify="space-between" wrap gap={20}>
       <InputSearchStyled
         loading={isLoadingCards}
         mode={isDarkMode ? 'dark' : 'light'}
         placeholder="Search for a country..."
         variant="borderless"
         size="large"
-        onSearch={searchTextCountry => onSearchInputHandler(searchTextCountry)}
+        onSearch={(searchTextCountry) =>
+          onSearchInputHandler(searchTextCountry)
+        }
       />
       <div>
         <SelectCountryStyled
@@ -71,9 +73,9 @@ export const ContentFilterContainer = () => {
           optionFilterProp="label"
           options={data}
           mode={isDarkMode ? 'dark' : 'light'}
-          onSelect={selectText => onSelectCountryHandler(selectText)}
+          onSelect={(selectText) => onSelectCountryHandler(selectText)}
         />
       </div>
-    </Flex>
+    </FiltersContainerStyled>
   );
 };
