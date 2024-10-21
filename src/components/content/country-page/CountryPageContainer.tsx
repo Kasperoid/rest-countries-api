@@ -55,6 +55,10 @@ export const CountryPageContainer = () => {
     },
   ];
 
+  const onClickBorderHandler = (nameCode: string) => {
+    navigate(`/country/${nameCode}`);
+  };
+
   useEffect(() => {
     dispatch(
       fetchCountry({
@@ -127,7 +131,7 @@ export const CountryPageContainer = () => {
                       <ButtonsBorderedStyled
                         key={index}
                         mode={isDarkMode ? 'dark' : 'light'}
-                        onClick={() => navigate(-1)}
+                        onClick={() => onClickBorderHandler(item)}
                       >
                         {item}
                       </ButtonsBorderedStyled>
