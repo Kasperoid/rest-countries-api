@@ -10,7 +10,6 @@ export const InputSearchStyled = styled(Search)<SearchProps & ThemeModeType>`
   && {
     box-shadow: 0px 0px 25px -3px rgba(34, 60, 80, 0.15);
     width: 30vw;
-    min-width: 300px;
 
     & .ant-input {
       background-color: ${({ mode }) => baseTheme.color[mode].element};
@@ -32,6 +31,10 @@ export const InputSearchStyled = styled(Search)<SearchProps & ThemeModeType>`
           border-color: ${({ mode }) => baseTheme.color[mode].input};
         }
       }
+    }
+
+    @media (max-width: 425px) {
+      width: 100%;
     }
   }
 `;
