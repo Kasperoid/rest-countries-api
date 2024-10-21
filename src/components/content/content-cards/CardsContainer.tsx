@@ -2,14 +2,25 @@ import { Flex, message, Space } from 'antd';
 import { CardCountryStyled } from '../../../styles/content/cards/CardCountryStyled';
 import { TitleStyled } from '../../../styles/TitleStyled';
 import { TextStyled } from '../../../styles/TextStyled';
-import { useAppSelector } from '../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { SpinStyled } from '../../../styles/loader/SpinStyled';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Wrapper } from '../../../styles/Wrapper';
 import { useNavigate } from 'react-router-dom';
 import { ErrorType } from '../../../types/types';
+import { clearError } from '../../../redux/slices/countriesSlice';
 
 export const CardsContainer = () => {
+  const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
+  const {
+    countries: data,
+    isLoading,
+    error,
+  } = useAppSelector((state) => state.countries);
+  const dispatch = useAppDispatch();
+  const isDarkMode = useAppSelector((store) => store.mode.isDarkMode);
+
   const onClickCardHandler = (event: any) => {
     navigate(`/country/${event.target.id}`);
   };
@@ -19,16 +30,8 @@ export const CardsContainer = () => {
       type: 'error',
       content: `${error.code}: ${error.message}`,
     });
+    dispatch(clearError());
   };
-
-  const [messageApi, contextHolder] = message.useMessage();
-  const navigate = useNavigate();
-  const {
-    countries: data,
-    isLoading,
-    error,
-  } = useAppSelector((state) => state.countries);
-  const isDarkMode = useAppSelector((store) => store.mode.isDarkMode);
 
   return (
     <>
