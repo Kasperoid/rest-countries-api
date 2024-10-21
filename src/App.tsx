@@ -12,7 +12,7 @@ import { ContentContainerStyled } from './styles/content/ContentContainerStyled'
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '*',
     element: <ContentContainer />,
   },
   {
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
 
 function App() {
   const dispatch = useAppDispatch();
-  const isDarkMode = useAppSelector(store => store.mode.isDarkMode);
+  const isDarkMode = useAppSelector((store) => store.mode.isDarkMode);
 
   useEffect(() => {
     dispatch(
