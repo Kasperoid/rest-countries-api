@@ -33,9 +33,14 @@ export const fetchCountries = createAsyncThunk<CountryType[], ArgsFetcherType>(
 const countriesSlice = createSlice({
   name: 'countries',
   initialState,
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchCountries.pending, (state) => {
+      state.error = null;
       state.isLoading = true;
     });
     builder.addCase(fetchCountries.fulfilled, (state, action) => {
@@ -53,4 +58,5 @@ const countriesSlice = createSlice({
   },
 });
 
+export const { clearError } = countriesSlice.actions;
 export default countriesSlice.reducer;
